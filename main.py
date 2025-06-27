@@ -21,7 +21,7 @@ app.add_middleware(
 groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 @app.post("/generate-message")
-    async def generate_message(data: dict):
+async def generate_message(data: dict):
     user_type = data.get("userType", "potential client")
     project_context = data.get("projectContext", "web development")
     tone = data.get("tone", "professional")
