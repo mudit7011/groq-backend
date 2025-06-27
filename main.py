@@ -21,7 +21,7 @@ app.add_middleware(
 groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 @app.post("/generate-message")
-async def generate_message(data: dict):
+    async def generate_message(data: dict):
     user_type = data.get("userType", "potential client")
     project_context = data.get("projectContext", "web development")
     tone = data.get("tone", "professional")
@@ -58,11 +58,17 @@ async def generate_message(data: dict):
             ],
             model="llama3-8b-8192",
         )
-        message = chat_completion.choices[0].message.content
-        return {"message": message}
+        full_message_content = chat_completion.choices[0].message.content
+
+        lines = full_message_content.split('\n', 1)
+        subject = lines[0].replace("Subject:", "").strip() if lines else ""
+        body = lines[1].strip() if len(lines) > 1 else ""
+
+        return {"subject": subject, "body": body}
+
     except Exception as e:
         print("❌ Error:", e)
-        return {"message": None}
+        return {"subject": None, "body": None}
 
 @app.get("/")
 async def read_root():
