@@ -11,7 +11,7 @@ app = FastAPI()
 # Enable CORS for frontend calls
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or set to your frontend's domain
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,7 +25,7 @@ async def generate_message(data: dict):
     user_type = data.get("userType", "potential client")
     project_context = data.get("projectContext", "web development")
     tone = data.get("tone", "professional")
-    subject_idea = data.get("subjectIdea", "")  # <- capture subject-specific idea
+    subject_idea = data.get("subjectIdea", "")
 
     system_prompt = f"""
     You are a creative assistant helping users contact Mudit Kumar, a software engineer, for a potential collaboration.
@@ -56,7 +56,7 @@ async def generate_message(data: dict):
                 {"role": "system", "content": system_prompt.strip()},
                 {"role": "user", "content": user_prompt.strip()}
             ],
-            model="llama3-8b-8192",  # ✅ FREE MODEL
+            model="llama3-8b-8192",
         )
         message = chat_completion.choices[0].message.content
         return {"message": message}
@@ -64,3 +64,7 @@ async def generate_message(data: dict):
         print("❌ Error:", e)
         return {"message": None}
 
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
