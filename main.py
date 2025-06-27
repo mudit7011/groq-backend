@@ -64,6 +64,10 @@ async def generate_message(data: dict):
         print("❌ Error:", e)
         return {"message": None}
 
+@app.get("/")
+async def read_root():
+    return {"message": "API is running"}
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
