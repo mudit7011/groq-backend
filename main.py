@@ -11,7 +11,7 @@ app = FastAPI()
 # Enable CORS for frontend calls
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://mudit-kumar-folio.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
